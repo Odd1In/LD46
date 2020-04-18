@@ -35,13 +35,16 @@ public class GamePackageController : MonoBehaviour
     }
 
     
-    public void PickupPackage()
+    public void PickupPackage() //Spawn Package
     {
         GameObject obj;
+        Package package;
         packageInTransit = true;
         obj = Instantiate(packagePrefab);
         obj.transform.parent = player.transform;
         obj.transform.localPosition = new Vector3(0, packages.Count+1, 0);
+        package = obj.AddComponent<Package>();
+        package.energy = 100;
         packages.Add(obj);
 
     }
@@ -52,7 +55,7 @@ public class GamePackageController : MonoBehaviour
         packages.RemoveAt(packages.Count-1);
     }
 }
-public class Package
+public class Package : MonoBehaviour
 {
     public int energy;
 }

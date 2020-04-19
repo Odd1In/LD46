@@ -9,19 +9,35 @@ public class EnemyController : MonoBehaviour
     GameObject player;
     public GameObject bullet;
     private float timer;
-    [SerializeField]private float cooldownTime;
+    [SerializeField] public float cooldownTime;
     public float health = 5;
+    public float bulletLifespan;
+    public float bulletSpeed;
+    public float bulletDamage;
+    public int area;
+    public float speed;
+    public Vector3[] waypoints;
+
+
+    //Stupid variable
+    private float waitToUpdatePosition;
     // Start is called before the first frame update
     void Start()
     {
+        waitToUpdatePosition = 1f;
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player");
 
     }
-
     // Update is called once per frame
     void Update()
     {
+        waitToUpdatePosition -= Time.deltaTime;
+        if(waitToUpdatePosition <= 0)
+        {
+        //    agent.updatePosition = true;
+        }
+        agent.speed = speed;
         agent.destination = player.transform.position;
 
         

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 551320795101041849}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -131,3 +131,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet: {fileID: 4922248821556851738, guid: 77cac36ed0d169e40a728db40acf441e, type: 3}
   cooldownTime: 0.5
+  health: 5
+  bulletLifespan: 0
+  bulletSpeed: 0
+  bulletDamage: 0
+  area: 0
+  speed: 0
+  waypoints: []

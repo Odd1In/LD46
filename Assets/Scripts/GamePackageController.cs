@@ -12,7 +12,7 @@ public class GamePackageController : MonoBehaviour
 
     [SerializeField] private GameObject packagePrefab;
     private GameObject player;
-    private List<GameObject> packages = new List<GameObject>();
+    public List<GameObject> packages = new List<GameObject>();
     // Start is called before the first frame update
     void Start()
     {
@@ -54,8 +54,46 @@ public class GamePackageController : MonoBehaviour
         Destroy(packages[packages.Count - 1]);
         packages.RemoveAt(packages.Count-1);
     }
+
+    public void RemovePackages(int index)
+    {
+        packageInTransit = false;
+        Destroy(packages[index]);
+        packages.RemoveAt(index);
+    }
+
+    public float TotalHolding()
+    {
+        float total = 0;
+        foreach (var package in packages)
+        {
+            total += package.GetComponent<Package>().energy;
+
+        }
+        return total;
+    }
+
+    public void RemoveEnergy(float amount)
+    {
+        if (packageInTransit)
+        {
+            float total = TotalHolding();
+            if (total - amount <= 0)
+            {
+                RemovePackages(0);
+            }
+            else
+            {
+                Package topPackage = packages[packages.Count - 1].GetComponent<Package>();
+                topPackage.energy -= amount;
+            }
+        }
+        
+    }
 }
+
+
 public class Package : MonoBehaviour
 {
-    public int energy;
+    public float energy;
 }

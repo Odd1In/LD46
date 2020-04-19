@@ -2,27 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletScript : MonoBehaviour
+public class PlayerBulletScript : MonoBehaviour
 {
     public float lifespan;
     public float age;
-    public float speed;
+    [HideInInspector] public float speed;
     private Rigidbody rb;
-    public float damage;
+    [HideInInspector] public float damage;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
 
-       // rb.AddForce(transform.forward * speed * Time.deltaTime);
+        // rb.AddForce(transform.forward * speed * Time.deltaTime);
     }
 
     // Update is called once per frame
     void Update()
     {
         age += Time.deltaTime;
-        if(age >= lifespan)
+        if (age >= lifespan)
         {
             Destroy(gameObject);
             age = 0;
@@ -33,11 +33,19 @@ public class BulletScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.transform.tag == "Player")
+    
+        
+
+        
+        if (collision.collider.transform.tag == "Enemy")
         {
-            Debug.Log("Player!");
-            collision.gameObject.GetComponent<PlayerController>().LoseHealth(damage);
+            Debug.Log("Enemy!");
+            EnemyController enemy;
+            enemy = collision.gameObject.GetComponent<EnemyController>();
+            enemy.health -= damage;
+            
             Destroy(gameObject);
         }
     }
 }
+

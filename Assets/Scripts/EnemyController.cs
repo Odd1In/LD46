@@ -10,6 +10,7 @@ public class EnemyController : MonoBehaviour
     public GameObject bullet;
     private float timer;
     [SerializeField]private float cooldownTime;
+    public float health = 5;
     // Start is called before the first frame update
     void Start()
     {
@@ -52,6 +53,11 @@ public class EnemyController : MonoBehaviour
             }
         }
 
+        if(health <= 0)
+        {
+            Destroy(gameObject);
+        }
+
     }
 
     private void ShootBullet()
@@ -67,5 +73,6 @@ public class EnemyController : MonoBehaviour
         bulletScript = b.GetComponent<BulletScript>();
         bulletScript.speed = 500f;
         bulletScript.lifespan = 2f;
+        bulletScript.damage = 5f;
     }
 }

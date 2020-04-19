@@ -9,18 +9,37 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float playerSpeed;
     private Vector3 leftStickInput;
     private Vector3 rightStickInput;
+    [SerializeField] private GameObject bullet;
+    [SerializeField] private float bulletSpeed;
+    [SerializeField] private float bulletDamage;
+
+    private GamePackageController gamePackageController;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        
+        gamePackageController = GameObject.Find("GameController").GetComponent<GamePackageController>();
     }
 
     // Update is called once per frame
     void Update()
     {
         GetPlayerInput();
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            GameObject b;
+            PlayerBulletScript bulletScript;
+            Rigidbody bulletRb;
+            b = Instantiate(bullet);
+            bulletScript = b.GetComponent<PlayerBulletScript>();
+            b.transform.position = transform.position + transform.forward;
+            bulletScript.damage = 1;
+            b.transform.rotation = transform.rotation;
+            bulletRb = b.GetComponent<Rigidbody>();
+            bulletRb.AddForce(transform.forward * bulletSpeed * Time.deltaTime);
+        }
         
     }
 
@@ -67,5 +86,11 @@ public class PlayerController : MonoBehaviour
 
             // Do something with the object that was hit by the raycast.
         }
+    }
+
+
+    public void LoseHealth(float damage)
+    {
+        gamePackageController.RemoveEnergy(damage);
     }
 }

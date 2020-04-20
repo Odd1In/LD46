@@ -8,6 +8,7 @@ public class EnemyController : MonoBehaviour
     NavMeshAgent agent;
     GameObject player;
     PlayerController playerController;
+    GamePackageController gamePackageController;
     public GameObject bullet;
     private float timer;
     [SerializeField] public float cooldownTime;
@@ -30,6 +31,8 @@ public class EnemyController : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         playerController = player.GetComponent<PlayerController>();
 
+        gamePackageController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GamePackageController>();
+
 
     }
     // Update is called once per frame
@@ -43,7 +46,82 @@ public class EnemyController : MonoBehaviour
         agent.speed = speed;
         agent.destination = player.transform.position;
 
+        if (gamePackageController.inTutorial)
+        {
+            TutorialLogic();
+        }
+        else
+        {
+            GameLogic();
+        }
+
         
+
+
+    }
+
+    private void ShootBullet()
+    {
+        GameObject b;
+        BulletScript bulletScript;
+        Rigidbody bulletRb;
+        b = Instantiate(bullet);
+        b.transform.position = transform.position;
+        b.transform.LookAt(player.transform.position);
+        bulletRb = b.GetComponent<Rigidbody>();
+        bulletRb.AddForce((player.transform.position - transform.position) * 8000f * Time.deltaTime);
+        bulletScript = b.GetComponent<BulletScript>();
+        bulletScript.speed = 500f;
+        bulletScript.lifespan = 2f;
+        bulletScript.damage = 5f;
+    }
+
+    private void TutorialLogic()
+    {
+        if (Vector3.Distance(player.transform.position, transform.position) > 130f)
+        {
+            agent.isStopped = true;
+        }
+        else
+        {
+            if (playerController.inSafeRoom)
+            {
+                agent.isStopped = true;
+            }
+            else
+            {
+                agent.isStopped = false;
+                if (agent.remainingDistance < 4f)
+                {
+                    agent.isStopped = true;
+                }
+                else
+                {
+                    agent.isStopped = false;
+                }
+
+                if (agent.remainingDistance < 15f)
+                {
+                    timer -= Time.deltaTime;
+                    if (timer <= 0)
+                    {
+                        timer = cooldownTime;
+                        ShootBullet();
+                    }
+
+                }
+            }
+
+        }
+
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void GameLogic()
+    {
         if (agent.remainingDistance > 130f)
         {
             agent.isStopped = true;
@@ -77,29 +155,12 @@ public class EnemyController : MonoBehaviour
 
                 }
             }
-            
+
         }
 
-        if(health <= 0)
+        if (health <= 0)
         {
             Destroy(gameObject);
         }
-
-    }
-
-    private void ShootBullet()
-    {
-        GameObject b;
-        BulletScript bulletScript;
-        Rigidbody bulletRb;
-        b = Instantiate(bullet);
-        b.transform.position = transform.position;
-        b.transform.LookAt(player.transform.position);
-        bulletRb = b.GetComponent<Rigidbody>();
-        bulletRb.AddForce((player.transform.position - transform.position) * 8000f * Time.deltaTime);
-        bulletScript = b.GetComponent<BulletScript>();
-        bulletScript.speed = 500f;
-        bulletScript.lifespan = 2f;
-        bulletScript.damage = 5f;
     }
 }

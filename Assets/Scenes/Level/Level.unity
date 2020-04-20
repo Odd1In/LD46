@@ -1848,6 +1848,7 @@ MonoBehaviour:
   initialTime: 60
   timeRemaining: 0
   inGame: 0
+  inTutorial: 0
 --- !u!4 &332244494
 Transform:
   m_ObjectHideFlags: 0
@@ -1899,6 +1900,8 @@ MonoBehaviour:
   waypointsArea1: []
   waypointsArea2: []
   waypointsArea3: []
+  enemyCount: 0
+  enemyLimit: 0
 --- !u!1 &334803873
 GameObject:
   m_ObjectHideFlags: 0
@@ -4179,7 +4182,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
@@ -9503,7 +9506,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 8b5b268d957d86e42bc728548916a6c8, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 70aa20a65be6c1f48845f99eab39765f, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

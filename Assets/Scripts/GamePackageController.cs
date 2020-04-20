@@ -33,9 +33,23 @@ public class GamePackageController : MonoBehaviour
     private GameUIController gameUIController;
 
     public bool inGame;
+    public bool inTutorial;
+
+    private float updateTextTimer;
+    private float updateTextInitialTimer;
     // Start is called before the first frame update
     void Start()
     {
+        updateTextInitialTimer = 3;
+        updateTextTimer = updateTextInitialTimer;
+        if(SceneManager.GetSceneByName("Tutorial Level") == SceneManager.GetActiveScene())
+        {
+            inTutorial = true;
+        }
+        else
+        {
+            inTutorial = false;
+        }
         inGame = true;
         player = GameObject.FindGameObjectWithTag("Player");
         enemySpawner = GetComponent<EnemySpawner>();
@@ -52,26 +66,64 @@ public class GamePackageController : MonoBehaviour
         {
             coinSpawnLocations.Add(coinSpawnLocationObject.transform.position);
         }
-
-        SpawnCoin(4);
+        if (inTutorial)
+        {
+            SpawnCoin(1);
+        }
+        else
+        {
+            SpawnCoin(4);
+        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        RemoveTime();
+        if (inTutorial && inGame)
+        {
+            if (updateTextTimer <= 0)
+            {
+                updateTextTimer = initialTime;
+            }
+            updateTextTimer -= Time.deltaTime;
+
+            
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene(0);
+        }
+        
         if (packageInTransit)
         {
+            if (inTutorial && inGame)
+            {
+                if(updateTextTimer <= 0)
+                {
+                    gameUIController.ChangeTempText("Go to the drop off point to drop the box");
+                }
+                
+            }
             packagePickup.gameObject.SetActive(false);
             packageDropoff.gameObject.SetActive(true);
         }
         else
         {
+            if (inTutorial && inGame)
+            {
+                if(updateTextTimer <= 0)
+                {
+                    gameUIController.ChangeTempText("Go to the pick up point to collect the box");
+                }
+                
+            }
             packageDropoff.gameObject.SetActive(false);
             packagePickup.gameObject.SetActive(true);
         }
-
-        if(inGame == false)
+        RemoveTime();
+        if (inGame == false)
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
@@ -85,11 +137,11 @@ public class GamePackageController : MonoBehaviour
         if (inGame)
         {
             timeRemaining -= Time.deltaTime;
-
-            if (timeRemaining <= 0)
-            {
-                EndGame();
-            }
+                if (timeRemaining <= 0)
+                {
+                    EndGame();
+                }
+            
         }
         
     }
@@ -104,14 +156,32 @@ public class GamePackageController : MonoBehaviour
     }
     private void EndGame()
     {
-        gameUIController.ChangeTempText("You lost!\nPress 'Enter' to exit");
-        inGame = false;
+        if (inTutorial && inGame)
+        {
+            gameUIController.ChangeTempText("Don't run out of time!\nPick up a blue coin to add more time");
+            
+        }
+        else
+        {
+            gameUIController.ChangeTempText("You lost!\nPress 'Enter' to exit");
+            inGame = false;
+        }
+        
     }
 
     private void WinGame()
     {
-        gameUIController.ChangeTempText("You won!\nTime:"+timeRemaining+"\nPress 'Enter' to exit");
-        inGame = false;
+        Debug.Log("WIN");
+        if (inTutorial)
+        {
+            gameUIController.ChangeTempText("Tutorial finished!\nPress 'Enter' to exit");
+            inGame = false;
+        }
+        else
+        {
+            gameUIController.ChangeTempText("You won!\nTime:" + timeRemaining + "\nPress 'Enter' to exit");
+            inGame = false;
+        }
     }
     
     public void PickupPackage() //Spawn Package
@@ -125,12 +195,22 @@ public class GamePackageController : MonoBehaviour
         package = obj.AddComponent<Package>();
         package.energy = 100;
         packages.Add(obj);
-        enemySpawner.SpawnEnemy(1);
-        enemySpawner.SpawnEnemy(1);
-        enemySpawner.SpawnEnemy(2);
-        enemySpawner.SpawnEnemy(2);
-        enemySpawner.SpawnEnemy(3);
-        enemySpawner.SpawnEnemy(3);
+        
+
+        if (inTutorial)
+        {
+            gameUIController.ChangeTempText("Good! Now go to the drop off point to drop the box there!");
+            enemySpawner.SpawnEnemy();
+        }
+        else
+        {
+            enemySpawner.SpawnEnemy(1);
+            enemySpawner.SpawnEnemy(1);
+            enemySpawner.SpawnEnemy(2);
+            enemySpawner.SpawnEnemy(2);
+            enemySpawner.SpawnEnemy(3);
+            enemySpawner.SpawnEnemy(3);
+        }
     }
     public void DropPackage()
     {
@@ -143,6 +223,11 @@ public class GamePackageController : MonoBehaviour
         if(energyTransferred >= energyNeedeed)
         {
             WinGame();
+        }
+
+        if (inTutorial)
+        {
+            gameUIController.ChangeTempText("Great! Now go back to the pickup point to collect another box");
         }
     }
 

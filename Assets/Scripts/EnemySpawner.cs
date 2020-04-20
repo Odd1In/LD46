@@ -5,6 +5,7 @@ using UnityEngine.AI;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private GameObject enemyObject;
+    private GamePackageController gamePackageController;
     [Space]
     [Header("Spawn Locations")]
     [SerializeField] private Transform spawn1;
@@ -19,14 +20,24 @@ public class EnemySpawner : MonoBehaviour
 
     private float timer;
     private float spawnTime;
-    private int enemyCount;
-    private int enemyLimit;
+    [SerializeField] private int enemyCount;
+    [SerializeField] private int enemyLimit;
     // Start is called before the first frame update
     void Start()
     {
-        enemyLimit = 20;
-        spawnTime = 2f;
+        gamePackageController = GetComponent<GamePackageController>();
         timer = spawnTime;
+        if (gamePackageController.inTutorial)
+        {
+            enemyLimit = 4;
+            spawnTime = 3f;
+        }
+        else
+        {
+            enemyLimit = 20;
+            spawnTime = 3f;
+        }
+        
     }
 
     // Update is called once per frame
@@ -38,10 +49,12 @@ public class EnemySpawner : MonoBehaviour
             SpawnEnemy();
             timer = spawnTime;
         }
+        /*
         if (Input.GetKeyDown(KeyCode.V))
         {
             SpawnEnemy();
         }
+        */
     }
 
     public GameObject SpawnEnemy(int area = 0, float speed = 5, float health = 5, float cooldown = 0.2f, float bulletSpeed = 550f, float bulletDamage = 5f, float bulletLifespan = 2f)

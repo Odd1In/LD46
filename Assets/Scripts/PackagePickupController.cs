@@ -29,13 +29,21 @@ public class PackagePickupController : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        gameUIController.ChangeTempText("Press Space to pickup");
-        inArea = true;
+        if(other.transform.tag == "Player")
+        {
+            gameUIController.ChangeTempText("Press Space to pickup");
+            inArea = true;
+        }
+        
     }
 
     private void OnTriggerExit(Collider other)
     {
-        gameUIController.ChangeTempText("");
-        inArea = false;
+        if (other.transform.tag == "Player")
+        {
+            gameUIController.ChangeTempText("");
+            inArea = false;
+        }
+        
     }
 }

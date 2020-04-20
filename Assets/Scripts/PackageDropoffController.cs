@@ -22,8 +22,8 @@ public class PackageDropoffController : MonoBehaviour
         {
             if (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.Space))
             {
-                packageController.DropPackage();
                 gameUIController.ChangeTempText("");
+                packageController.DropPackage();
                 inArea = false;
                 
             }
@@ -32,13 +32,25 @@ public class PackageDropoffController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        gameUIController.ChangeTempText("Press Space to drop");
-        inArea = true;
+        if(other.tag == "Player")
+        {
+            gameUIController.ChangeTempText("Press Space to drop");
+            inArea = true;
+        }
+        
     }
 
     private void OnTriggerExit(Collider other)
     {
-        gameUIController.ChangeTempText("");
-        inArea = false;
+        if (other.tag == "Player")
+        {
+            if (packageController.inTutorial)
+            {
+                gameUIController.ChangeTempText("Take this box to the green drop off point");
+                inArea = false;
+            }
+            
+        }
+        
     }
 }

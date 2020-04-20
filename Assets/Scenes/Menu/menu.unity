@@ -1986,7 +1986,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: -1827.4, y: 52.600006}
-  m_SizeDelta: {x: 566, y: 49.6}
+  m_SizeDelta: {x: 1273.7, y: 49.6}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1467778788
 MonoBehaviour:
@@ -2394,6 +2394,7 @@ MonoBehaviour:
   playButton: {fileID: 506615694}
   tutorialButton: {fileID: 335029481}
   quitButton: {fileID: 2107930762}
+  textGamepad: {fileID: 1467778788}
 --- !u!4 &1975641668
 Transform:
   m_ObjectHideFlags: 0

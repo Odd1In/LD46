@@ -93,7 +93,7 @@ public class GamePackageController : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(1);
         }
         
         if (packageInTransit)
@@ -127,7 +127,7 @@ public class GamePackageController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                SceneManager.LoadScene(0);
+                SceneManager.LoadScene(1);
             }
         }
     }

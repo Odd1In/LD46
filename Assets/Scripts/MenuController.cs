@@ -10,6 +10,8 @@ public class MenuController : MonoBehaviour
     [SerializeField] private Button playButton;
     [SerializeField] private Button tutorialButton;
     [SerializeField] private Button quitButton;
+
+    [SerializeField] private TextMeshProUGUI textGamepad;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +23,14 @@ public class MenuController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetJoystickNames()[0] != "")
+        {
+            textGamepad.text = "Controller: "+ Input.GetJoystickNames()[0];
+        }
+        else
+        {
+            textGamepad.text = "No controllers detected";
+        }
         
     }
 
@@ -32,10 +42,10 @@ public class MenuController : MonoBehaviour
 
     void GoToTutorial()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
     void PlayGame()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(3);
     }
 }

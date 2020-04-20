@@ -8,6 +8,8 @@
 /[Bb]uild/
 /[Bb]uilds/
 /[Ll]ogs/
+/[Tt]umbs/
+/[Mm]usic/
 /[Uu]ser[Ss]ettings/
 
 # MemoryCaptures can get excessive in size.
@@ -55,6 +57,7 @@ ExportedObj/
 # Unity3D generated file on crash reports
 sysinfo.txt
 
+
 # Builds
 *.apk
 *.unitypackage
@@ -68,3 +71,7 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+#Random stuff
+description.txt
+name ideas.txt

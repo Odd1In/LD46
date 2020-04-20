@@ -5,11 +5,13 @@ using UnityEngine;
 public class PackagePickupController : MonoBehaviour
 {
     private GamePackageController packageController;
+    private GameUIController gameUIController;
     private bool inArea;
     // Start is called before the first frame update
     void Start()
     {
         packageController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GamePackageController>();
+        gameUIController = packageController.GetComponent<GameUIController>();
     }
 
     // Update is called once per frame
@@ -17,22 +19,23 @@ public class PackagePickupController : MonoBehaviour
     {
         if (inArea)
         {
-            if (Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.Space))
             {
                 packageController.PickupPackage();
-                Debug.Log("UP");
+                gameUIController.ChangeTempText("");
                 inArea = false;
             }
         }
     }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Press Y to pickup");
+        gameUIController.ChangeTempText("Press Space to pickup");
         inArea = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
+        gameUIController.ChangeTempText("");
         inArea = false;
     }
 }

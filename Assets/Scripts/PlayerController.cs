@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
 
     private Rigidbody rb;
+    private AudioSource shootAudio;
     [SerializeField] private float playerSpeed;
     private Vector3 leftStickInput;
     private Vector3 rightStickInput;
@@ -15,31 +16,67 @@ public class PlayerController : MonoBehaviour
 
     private GamePackageController gamePackageController;
 
+
+    public bool inSafeRoom;
+    private Vector3 oldMousePosition;
+
+    [SerializeField] private float cooldown;
+    private float timer;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         gamePackageController = GameObject.Find("GameController").GetComponent<GamePackageController>();
+        oldMousePosition = Input.mousePosition;
+        timer = cooldown;
+
+        shootAudio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        timer -= Time.deltaTime;
+        
         GetPlayerInput();
-
-        if (Input.GetButtonDown("Fire1"))
+        if (gamePackageController.inGame)
         {
-            GameObject b;
-            PlayerBulletScript bulletScript;
-            Rigidbody bulletRb;
-            b = Instantiate(bullet);
-            bulletScript = b.GetComponent<PlayerBulletScript>();
-            b.transform.position = transform.position + transform.forward;
-            bulletScript.damage = 1;
-            b.transform.rotation = transform.rotation;
-            bulletRb = b.GetComponent<Rigidbody>();
-            bulletRb.AddForce(transform.forward * bulletSpeed * Time.deltaTime);
+            if (Input.GetButtonDown("Fire1"))
+            {
+                GameObject b;
+                PlayerBulletScript bulletScript;
+                Rigidbody bulletRb;
+                b = Instantiate(bullet);
+                bulletScript = b.GetComponent<PlayerBulletScript>();
+                b.transform.position = transform.position + transform.forward;
+                bulletScript.damage = 1;
+                b.transform.rotation = transform.rotation;
+                bulletRb = b.GetComponent<Rigidbody>();
+                bulletRb.AddForce(transform.forward * bulletSpeed * Time.deltaTime);
+                shootAudio.Play();
+            }
+            if (Input.GetAxis("Fire1") > 0.3f)
+            {
+                if (timer <= 0)
+                {
+                    timer = cooldown;
+                    GameObject b;
+                    PlayerBulletScript bulletScript;
+                    Rigidbody bulletRb;
+                    b = Instantiate(bullet);
+                    bulletScript = b.GetComponent<PlayerBulletScript>();
+                    b.transform.position = transform.position + transform.forward;
+                    bulletScript.damage = 1;
+                    b.transform.rotation = transform.rotation;
+                    bulletRb = b.GetComponent<Rigidbody>();
+                    bulletRb.AddForce(transform.forward * bulletSpeed * Time.deltaTime);
+                    shootAudio.Play();
+                }
+
+            }
         }
+        
         
     }
 
@@ -57,7 +94,8 @@ public class PlayerController : MonoBehaviour
         //Debug.Log(curMovement.magnitude * transform.forward);
         // rb.transform.position = (curMovement * transform.forward);
         MouseRotation();
-       ControllerRotation();
+        ControllerRotation();
+        
 
     }
 
@@ -73,19 +111,25 @@ public class PlayerController : MonoBehaviour
 
     private void MouseRotation()
     {
-        //Mouse rotation
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out hit))
+        
+        if (Input.mousePosition != oldMousePosition)
         {
-            Vector3 point = hit.point;
-            point.y = 0.5f;
+            //Mouse rotation
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            transform.LookAt(point);
+            if (Physics.Raycast(ray, out hit))
+            {
+                Vector3 point = hit.point;
+                point.y = 0.5f;
 
-            // Do something with the object that was hit by the raycast.
+                transform.LookAt(point);
+
+                // Do something with the object that was hit by the raycast.
+            }
         }
+        oldMousePosition = Input.mousePosition;
+
     }
 
 
@@ -93,4 +137,7 @@ public class PlayerController : MonoBehaviour
     {
         gamePackageController.RemoveEnergy(damage);
     }
+
+
+    
 }

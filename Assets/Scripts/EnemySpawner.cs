@@ -16,15 +16,28 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private Transform[] waypointsArea1;
     [SerializeField] private Transform[] waypointsArea2;
     [SerializeField] private Transform[] waypointsArea3;
+
+    private float timer;
+    private float spawnTime;
+    private int enemyCount;
+    private int enemyLimit;
     // Start is called before the first frame update
     void Start()
     {
-        
+        enemyLimit = 20;
+        spawnTime = 2f;
+        timer = spawnTime;
     }
 
     // Update is called once per frame
     void Update()
     {
+        timer -= Time.deltaTime;
+        if(timer <= 0)
+        {
+            SpawnEnemy();
+            timer = spawnTime;
+        }
         if (Input.GetKeyDown(KeyCode.V))
         {
             SpawnEnemy();
@@ -33,7 +46,13 @@ public class EnemySpawner : MonoBehaviour
 
     public GameObject SpawnEnemy(int area = 0, float speed = 5, float health = 5, float cooldown = 0.2f, float bulletSpeed = 550f, float bulletDamage = 5f, float bulletLifespan = 2f)
     {
-        if(area > 3)
+        enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
+        if(enemyCount > enemyLimit - 1)
+        {
+            Debug.Log("Too much enemies");
+            return null;
+        }
+        if (area > 3)
         {
             Debug.Log("Not a valid area code");
             return null;
@@ -97,8 +116,8 @@ public class EnemySpawner : MonoBehaviour
         obj.GetComponent<NavMeshAgent>().Warp(spawnPoint.position);
         Debug.Log("Area " + area + "\n SpawnPoint:" + spawnIndex);
         
-
+        
         return obj;
-
+        
     }
 }

@@ -5,16 +5,20 @@ using TMPro;
 
 public class GameUIController : MonoBehaviour
 {
-    enum textObjects
+    public enum textObjects
     {
-        energyNeeded,
-        energyHolding
+        energyNeeded = 1,
+        energyHolding = 2,
+        timer = 3,
+        temp = 4
     }
     private PlayerController playerController;
     private GamePackageController gamePackageController;
 
     [SerializeField] private TextMeshProUGUI txtEnergyHolding;
     [SerializeField] private TextMeshProUGUI txtEnergyNeeded;
+    [SerializeField] private TextMeshProUGUI txtTimer;
+    [SerializeField] private TextMeshProUGUI txtTempText;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +37,17 @@ public class GameUIController : MonoBehaviour
         {
             txtEnergyHolding.enabled = false;
         }
+
+        if(txtTimer.text != Mathf.Round(gamePackageController.timeRemaining).ToString())
+        {
+            txtTimer.text = Mathf.Round(gamePackageController.timeRemaining).ToString();
+            txtEnergyNeeded.text = "Energy Target: " + gamePackageController.energyTransferred.ToString() + "/" + gamePackageController.energyNeedeedString;
+        }
+    }
+
+    public void ChangeTempText(string text)
+    {
+                txtTempText.text = text;
     }
 
     

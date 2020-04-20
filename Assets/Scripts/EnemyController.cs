@@ -7,6 +7,7 @@ public class EnemyController : MonoBehaviour
 {
     NavMeshAgent agent;
     GameObject player;
+    PlayerController playerController;
     public GameObject bullet;
     private float timer;
     [SerializeField] public float cooldownTime;
@@ -27,6 +28,8 @@ public class EnemyController : MonoBehaviour
         waitToUpdatePosition = 1f;
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player");
+        playerController = player.GetComponent<PlayerController>();
+
 
     }
     // Update is called once per frame
@@ -41,32 +44,40 @@ public class EnemyController : MonoBehaviour
         agent.destination = player.transform.position;
 
         
-        if (agent.remainingDistance > 20f)
+        if (agent.remainingDistance > 130f)
         {
             agent.isStopped = true;
         }
         else
         {
-            agent.isStopped = false;
-            if (agent.remainingDistance < 4f)
+            if (playerController.inSafeRoom)
             {
                 agent.isStopped = true;
             }
             else
             {
                 agent.isStopped = false;
-            }
-
-            if(agent.remainingDistance < 10f)
-            {
-                timer -= Time.deltaTime;
-                if(timer <= 0)
+                if (agent.remainingDistance < 4f)
                 {
-                    timer = cooldownTime;
-                    ShootBullet();
+                    agent.isStopped = true;
                 }
-                
+                else
+                {
+                    agent.isStopped = false;
+                }
+
+                if (agent.remainingDistance < 15f)
+                {
+                    timer -= Time.deltaTime;
+                    if (timer <= 0)
+                    {
+                        timer = cooldownTime;
+                        ShootBullet();
+                    }
+
+                }
             }
+            
         }
 
         if(health <= 0)

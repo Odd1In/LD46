@@ -1,11 +1,31 @@
 Active Earth Rush is a dark action game where you have to transport energy to the Earth to keep the simulated Earth's alive.
+Enemies get in your way and they will try their best to make sure the energy doesn't reach the little planets in the secret room.
 
 
 
 
+
+
+Controls:
+- Move: WASD/Arrow Keys/Left Stick (Controller)
+- Aim: Mouse/Right Stick (Controller)
+- Shoot: Left Mouse Button/Left Trigger (Controller)
+- Interact: Space/Y (Xbox Controller)
 
 How to play (There is an in game tutorial if you need it):
 
-- Get
+- Get to the pickup zone
+- Pick up the box
+- Transport the box to the drop off zone
+- Go back to the pick up zone
+- When enemies attack you, the energy in your box decreases. 
+- You win when you have transported enough energy to keep the Earth's running
+- You lose when you run out of time (you can add time when you pick up a blue coin)
+
+
+Extra things you should know
+- There is partial controller support.
+- You can press 'M' to toggle mute
 
 Art and Music created by TheOdd1In.
+You can download

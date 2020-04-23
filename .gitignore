@@ -8,8 +8,8 @@
 /[Bb]uild/
 /[Bb]uilds/
 /[Ll]ogs/
-/[Tt]umbs/
-/[Mm]usic/
+Thumbs
+Music
 /[Uu]ser[Ss]ettings/
 
 # MemoryCaptures can get excessive in size.
@@ -72,6 +72,7 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
-#Random stuff
-description.txt
+
+
 name ideas.txt
+Thumbs
